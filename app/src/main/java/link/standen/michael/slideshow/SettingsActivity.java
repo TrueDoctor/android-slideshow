@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -112,12 +113,33 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 			final SwitchPreference reverseOrderPref = (SwitchPreference)findPreference("reverse_order");
 			final SwitchPreference randomOrderPref = (SwitchPreference)findPreference("random_order");
-			// Enabling reverse disables random
+			final SwitchPreference threemaModePref = (SwitchPreference)findPreference("threema_mode");
+			final EditTextPreference repeatCountPref = (EditTextPreference)findPreference("repeat_count");
+			final EditTextPreference randomCountPref = (EditTextPreference)findPreference("random_count");
+			// Disabling Threema Mode disables
+			repeatCountPref.setEnabled(threemaModePref.isChecked());
+			randomCountPref.setEnabled(threemaModePref.isChecked());
+
+			threemaModePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					repeatCountPref.setEnabled(Boolean.TRUE.equals(newValue));
+					randomCountPref.setEnabled(Boolean.TRUE.equals(newValue));
+					if (Boolean.TRUE.equals(newValue)){
+						reverseOrderPref.setChecked(false);
+					}
+					return true;
+				}
+			});
+			// Enabling reverse disables random and threema mode
 			reverseOrderPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
 					if (Boolean.TRUE.equals(newValue)){
 						randomOrderPref.setChecked(false);
+						threemaModePref.setChecked(false);
+						repeatCountPref.setEnabled(false);
+						randomCountPref.setEnabled(false);
 					}
 					return true;
 				}
@@ -173,6 +195,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 					return true;
 				}
 			});
+
 
 			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
 			// to their values. When their values change, their summaries are

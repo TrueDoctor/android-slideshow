@@ -96,6 +96,19 @@
 		Erfordert die Nutzung der Glide Bibliothek.
 	</string>
 
+	<string name="pref_title_threema_mode">Threema Modus</string>
+	<string name="pref_description_threema_mode">Zeige nur die neusten Bilder.
+	</string>
+
+	<string name="pref_title_repeat_count">Diashow Länge</string>
+	<string name="pref_description_repeat_count">Die Anzahl von Bildern die im Threema Modus angezeigt
+		werden bevor sich die Diashow wiederholt.
+	</string>
+
+	<string name="pref_title_random_count">Zufälliger Anteil</string>
+	<string name="pref_description_random_count">Dia Anzahl an Bilder pro Durchlauf der Zufällig ausgewählt wird.
+	</string>
+
 	<string name="pref_title_use_device_root">Stammverzeichnis des Gerätes verwenden</string>
 	<string name="pref_description_use_device_root">Aktiviert die Navigation bis zum Stammverzeichnis des Gerätes. Dies ermöglicht den Zugriff auf Dateien überall auf dem Gerät, einschließlich eingebundenem Speicher wie SD-Karten.
 	</string>

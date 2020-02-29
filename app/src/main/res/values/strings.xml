@@ -129,6 +129,19 @@
 		be shown before changing to the next image.
 	</string>
 
+	<string name="pref_title_threema_mode">Threema Mode</string>
+	<string name="pref_description_threema_mode">Cycle through the newest pictures indefinitely.
+	</string>
+
+	<string name="pref_title_repeat_count">Repeat Count</string>
+	<string name="pref_description_repeat_count">The number of images that will be shown, before the
+		slideshow is started again.
+	</string>
+
+	<string name="pref_title_random_count">Random Count</string>
+	<string name="pref_description_random_count">The number of Random images that will be shown for each cycle.
+	</string>
+
 	<string name="pref_title_image_strategy">Use Glide to load images</string>
 	<string name="pref_description_image_strategy">Use Glide to load images. Glide has support for
 		other features, such as preloading and GIF support. Turning this off will enable to old custom image loading

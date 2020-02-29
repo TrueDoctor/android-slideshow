@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.Random;
 
 import link.standen.michael.slideshow.listener.OnSwipeTouchListener;
 import link.standen.michael.slideshow.model.FileItem;
@@ -63,6 +64,9 @@ public class ImageActivity extends BaseActivity implements ImageStrategy.ImageSt
 	private static boolean IMAGE_DETAILS;
 	private static boolean IMAGE_DETAILS_DURING;
 	private static boolean SKIP_LONG_LOAD;
+	private static boolean THREEMA_MODE;
+	private static int REPEAT_COUNT;
+	private static int RANDOM_COUNT;
 	private static boolean PRELOAD_IMAGES;
 	private static boolean DELETE_WARNING;
 
@@ -76,6 +80,7 @@ public class ImageActivity extends BaseActivity implements ImageStrategy.ImageSt
 	private View snackbarStoppedView;
 	private boolean isLoading = false;
 	private Snackbar loadingSnackbar = null;
+	private final Random random = new java.util.Random();
 	private final Handler loadingHandler = new Handler();
 	private final Runnable loadingRunnable = new Runnable() {
 		@Override
@@ -321,7 +326,7 @@ public class ImageActivity extends BaseActivity implements ImageStrategy.ImageSt
 				}
 			}
 		}
-		firstImagePosition = imagePosition;
+		firstImagePosition = THREEMA_MODE ? 0 : imagePosition;
 
 		Log.v(TAG, String.format("First item is at index: %s", imagePosition));
 		Log.v(TAG, String.format("File list has size of: %s", fileList.size()));
@@ -430,6 +435,13 @@ public class ImageActivity extends BaseActivity implements ImageStrategy.ImageSt
 		Log.d(TAG, "Loaded preferences:");
 		SLIDESHOW_DELAY = (int) (Float.parseFloat(preferences.getString("slide_delay", "3")) * 1000);
 		Log.d(TAG, String.format("SLIDESHOW_DELAY: %d", SLIDESHOW_DELAY));
+		REPEAT_COUNT = (int) (Float.parseFloat(preferences.getString("repeat_count", "10")));
+		Log.d(TAG, String.format("REPEAT_COUNT: %d", REPEAT_COUNT));
+		RANDOM_COUNT = (int) (Float.parseFloat(preferences.getString("random_count", "3")));
+		RANDOM_COUNT = RANDOM_COUNT <= REPEAT_COUNT ? RANDOM_COUNT : REPEAT_COUNT;
+		Log.d(TAG, String.format("RANDOM_COUNT: %d", RANDOM_COUNT));
+		THREEMA_MODE = preferences.getBoolean("threema_mode", false);
+		Log.d(TAG, String.format("THREEMA_MODE: %b", THREEMA_MODE));
 		STOP_ON_COMPLETE = preferences.getBoolean("stop_on_complete", false);
 		Log.d(TAG, String.format("STOP_ON_COMPLETE: %b", STOP_ON_COMPLETE));
 		REVERSE_ORDER = preferences.getBoolean("reverse_order", false);
@@ -486,20 +498,26 @@ public class ImageActivity extends BaseActivity implements ImageStrategy.ImageSt
 			if (RANDOM_ORDER){
 				Collections.shuffle(fileList);
 			}
+			if (THREEMA_MODE){
+				Collections.reverse(fileList);
+			}
 		}
-
+		int imageCount = THREEMA_MODE ? REPEAT_COUNT : fileList.size();
 		do {
 			newPosition += forwards ? 1 : -1;
 			if (newPosition < 0){
-				newPosition = fileList.size() - 1;
+				newPosition = imageCount - 1;
 			}
-			if (newPosition >= fileList.size()){
+			if (newPosition >= imageCount){
 				newPosition = 0;
 			}
 			if (newPosition == current){
 				// Looped. Exit
 				onBackPressed();
 				return;
+			}
+			if (newPosition >= imageCount - RANDOM_COUNT) {
+				newPosition = random.nextInt(fileList.size() - 1);
 			}
 		} while (!testPositionIsImage(newPosition));
 		if (!preload){

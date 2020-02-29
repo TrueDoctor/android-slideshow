@@ -47,6 +47,28 @@
 
 	<SwitchPreference
 		android:defaultValue="false"
+		android:key="threema_mode"
+		android:summary="@string/pref_description_threema_mode"
+		android:title="@string/pref_title_threema_mode"/>
+
+	<EditTextPreference
+		android:defaultValue="10"
+		android:key="repeat_count"
+		android:summary="@string/pref_description_repeat_count"
+		android:title="@string/pref_title_repeat_count"
+		android:enabled="false"
+		android:inputType="numberDecimal" />
+
+	<EditTextPreference
+		android:defaultValue="3"
+		android:key="random_count"
+		android:summary="@string/pref_description_random_count"
+		android:title="@string/pref_title_random_count"
+		android:enabled="false"
+		android:inputType="numberDecimal" />
+
+	<SwitchPreference
+		android:defaultValue="false"
 		android:key="skip_long_load"
 		android:summary="@string/pref_description_skip_long_load"
 		android:title="@string/pref_title_skip_long_load"/>
